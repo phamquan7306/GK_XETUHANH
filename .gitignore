@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.aix
+*.part
+.vscode/
+.DS_Store

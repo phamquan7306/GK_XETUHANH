@@ -1,0 +1,87 @@
+# Trang điều khiển (tự sinh từ web_page.html - sửa file .html rồi chạy gen_web_page.py)
+HTML = r'''<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#263238"><meta name="mobile-web-app-capable" content="yes">
+<title>OOMWOO</title>
+<style>
+:root{--bg:#263238;--pad:#37474f;--ring:#78909c;--txt:#eceff1;--blue:#1e88e5;--orange:#ff9800;--green:#43a047;--red:#e53935;--gray:#78909c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden;touch-action:none;overscroll-behavior:none}
+#top{display:flex;align-items:center;gap:8px;padding:6px 10px;height:44px}
+#dot{width:12px;height:12px;border-radius:50%;background:var(--red);flex:none}
+#st{flex:1;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fs{background:var(--pad);color:var(--txt);border:0;border-radius:8px;padding:8px 10px;font-size:13px}
+#main{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 10px;height:calc(100% - 44px)}
+.col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.lab{font-size:12px;opacity:.8}
+.joy{position:relative;width:var(--js);height:var(--js);border-radius:50%;background:#1f2a30;border:4px solid var(--ring);touch-action:none}
+.joy .knob{position:absolute;left:50%;top:50%;width:34%;height:34%;margin:-17% 0 0 -17%;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px #0008;will-change:transform}
+#jm .knob{background:var(--blue)}#jt .knob{background:var(--orange)}
+.joy .ar{position:absolute;color:#b0bec5;font-size:calc(var(--js)*.09);line-height:1;pointer-events:none}
+#jt .rail{position:absolute;left:10%;right:10%;top:41%;height:18%;border-radius:999px;background:#455a64;pointer-events:none}
+#mid{flex:1;max-width:360px;display:flex;flex-direction:column;gap:10px;align-items:stretch}
+button.big{border:0;border-radius:12px;color:#fff;font-weight:700;font-size:18px;padding:14px 8px}
+#mode{background:var(--gray)}#stop{background:var(--red);font-size:22px}
+#spd{width:100%;accent-color:var(--blue);height:28px}
+#spl{text-align:center;font-size:15px}
+#hint{text-align:center;font-size:12px;opacity:.6;pointer-events:none}
+@media (orientation:portrait){#main{flex-wrap:wrap;justify-content:space-around;align-content:center;gap:18px 6px}#mid{flex-basis:100%;max-width:none;order:-1}.col{flex:0 0 46%}.lab{text-align:center}}
+</style></head><body>
+<div id="top"><div id="dot"></div><div id="st">Đang kết nối xe…</div><button id="fs">⛶ Toàn màn hình</button></div>
+<div id="main">
+ <div class="col"><div class="joy" id="jm"><span class="ar" style="left:46%;top:3%">▲</span><span class="ar" style="left:46%;bottom:3%">▼</span><span class="ar" style="left:3%;top:45%">◀</span><span class="ar" style="right:3%;top:45%">▶</span><div class="knob"></div></div><div class="lab">DI CHUYỂN: tiến/lùi + trượt ngang</div></div>
+ <div id="mid"><button class="big" id="mode">CHẾ ĐỘ: --</button><button class="big" id="stop">■ DỪNG</button>
+  <div id="spl">Tốc độ: 60%</div><input id="spd" type="range" min="20" max="100" value="60">
+  <div id="hint">Giữ cần để chạy, thả tay là xe dừng. Gạt cần lúc đang TỰ CHẠY = chuyển sang lái tay.</div></div>
+ <div class="col"><div class="joy" id="jt"><div class="rail"></div><span class="ar" style="left:4%;top:45%">↺</span><span class="ar" style="right:4%;top:45%">↻</span><div class="knob"></div></div><div class="lab">XOAY: gạt trái / phải</div></div>
+</div>
+<script>
+(function(){
+var ws=null,ok=false,jx=0,jy=0,jw=0,sentZero=true,lastMsg=0;
+var st=document.getElementById('st'),dot=document.getElementById('dot'),mode=document.getElementById('mode');
+function size(){var w=innerWidth,h=innerHeight,s;if(h>w)s=Math.min((w-40)/2,h-44-330);else s=Math.min(h-44-40,(w-60)*0.34);document.documentElement.style.setProperty('--js',Math.max(110,Math.floor(s))+'px');}
+addEventListener('resize',size);size();
+function send(t){if(ws&&ws.readyState===1){try{ws.send(t)}catch(e){}}}
+function connect(){
+ try{ws=new WebSocket('ws://'+location.host+'/ws')}catch(e){setTimeout(connect,1000);return}
+ ws.onopen=function(){ok=true;dot.style.background='#43a047';st.textContent='Đã kết nối xe';send('V'+spd.value);send('?')};
+ ws.onmessage=function(e){lastMsg=Date.now();var t=String(e.data);st.textContent='Xe: '+t;
+  if(t.indexOf('TU CHAY')===0){mode.textContent='CHẾ ĐỘ: TỰ CHẠY (bấm để lái tay)';mode.style.background='#43a047'}
+  else if(t.indexOf('LAI TAY')===0){mode.textContent='CHẾ ĐỘ: LÁI TAY (bấm để tự chạy)';mode.style.background='#ff9800'}};
+ ws.onclose=function(){ok=false;dot.style.background='#e53935';st.textContent='Mất kết nối xe – đang thử lại…';mode.textContent='CHẾ ĐỘ: --';mode.style.background='#78909c';setTimeout(connect,1000)};
+ ws.onerror=function(){try{ws.close()}catch(e){}};
+}
+connect();
+function pct(v,R){var p=Math.round(v/R*100);if(p>100)p=100;if(p<-100)p=-100;return Math.abs(p)<10?0:p}
+function joy(id,horizOnly,cb){
+ var el=document.getElementById(id),kn=el.querySelector('.knob'),pid=null;
+ function upd(e){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,R=r.width/2-r.width*0.17;
+  var dx=e.clientX-cx,dy=horizOnly?0:e.clientY-cy,d=Math.hypot(dx,dy);if(d>R){dx*=R/d;dy*=R/d}
+  kn.style.transform='translate('+dx+'px,'+dy+'px)';cb(pct(dx,R),pct(dy,R))}
+ function end(){pid=null;kn.style.transform='';cb(0,0);tick(true)}
+ el.addEventListener('pointerdown',function(e){e.preventDefault();pid=e.pointerId;try{el.setPointerCapture(pid)}catch(_){}upd(e);tick(true)});
+ el.addEventListener('pointermove',function(e){if(e.pointerId===pid){e.preventDefault();upd(e)}});
+ el.addEventListener('pointerup',function(e){if(e.pointerId===pid)end()});
+ el.addEventListener('pointercancel',function(e){if(e.pointerId===pid)end()});
+ el.addEventListener('lostpointercapture',function(e){if(e.pointerId===pid)end()});
+}
+joy('jm',false,function(x,y){jx=-y;jy=-x});
+joy('jt',true,function(x,y){jw=-x});
+function tick(force){var moving=jx||jy||jw;
+ if(moving){send('J'+jx+','+jy+','+jw);sentZero=false}
+ else if(!sentZero||force){send('J0,0,0');sentZero=true}}
+setInterval(function(){tick(false)},100);
+setInterval(function(){send('?')},1000);
+mode.onclick=function(){send('T')};
+document.getElementById('stop').onclick=function(){jx=jy=jw=0;send('X')};
+var spd=document.getElementById('spd'),spl=document.getElementById('spl'),tv=0;
+spd.oninput=function(){spl.textContent='Tốc độ: '+spd.value+'%';var n=Date.now();if(n-tv>150){tv=n;send('V'+spd.value)}};
+spd.onchange=function(){send('V'+spd.value)};
+document.getElementById('fs').onclick=function(){var d=document.documentElement;var p=(d.requestFullscreen||d.webkitRequestFullscreen);
+ if(p){Promise.resolve(p.call(d)).then(function(){try{screen.orientation.lock('landscape')}catch(e){}}).catch(function(){})}};
+addEventListener('contextmenu',function(e){e.preventDefault()});
+document.addEventListener('visibilitychange',function(){if(document.hidden){jx=jy=jw=0;send('J0,0,0')}});
+})();
+</script></body></html>
+'''
