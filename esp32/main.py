@@ -1,23 +1,3 @@
-# =====================================================================
-#  OOMWOO - BẢN GIỮA KỲ: tự chạy lung tung tránh vật cản bằng LiDAR + điều khiển bằng app Bluetooth
-#  Chỉ dùng: 4 động cơ (chạy hở, không encoder) + LiDAR + BLE. Không MPU6050, không Wi-Fi, không Ubuntu.
-#  Đây là main.py RIÊNG của bản giữa kỳ (~/ros2_ws/xe_giuaky/esp32/), nạp bằng biểu tượng "GK Nạp ESP32".
-#  Bản quét bản đồ đủ cảm biến (SLAM, Ubuntu/RViz2) không bị sửa; muốn quay lại thì nạp lại bản đó bằng biểu tượng của nó.
-#  Cấu hình riêng: giuaky_config.py | chân GPIO, dấu bánh, LiDAR, PWM: config.py
-#
-#  Lệnh từ điện thoại (chuỗi ASCII ghi vào đặc tính RX của dịch vụ Nordic UART, nhiều lệnh liền nhau cũng được):
-#    F  tiến        B  lùi         L  xoay trái     R  xoay phải     Q  trượt trái    E  trượt phải
-#    G  chéo trái-trước   H  chéo phải-trước
-#       (giữ nút: app gửi lại mỗi ~0.2 s; xe chỉ chạy tiếp 0.6 s sau lệnh cuối -> mất sóng là xe tự dừng)
-#    S  thả nút (dừng chuyển động lái tay)          X  DỪNG HẲN (về chế độ lái tay + dừng)
-#    A  chế độ TỰ CHẠY      M  chế độ LÁI TAY      T  đổi qua lại giữa hai chế độ
-#    V<số>  tốc độ 20..100 (%)  ví dụ V60             ?  hỏi trạng thái ngay
-#    J<tiến>,<sang trái>,<xoay trái>   joystick, mỗi số -100..100 (% tốc độ tối đa), ví dụ J80,-20,0 ; J0,0,0 = thả cần (dừng)
-#       app gửi lại ~10 lần/giây khi đang gạt; 0.6 s không nhận lệnh là xe tự dừng
-#  Xe gửi lại (notify trên đặc tính TX, <= 20 ký tự, 2 lần/giây):  "TU CHAY|0.85m"  /  "LAI TAY|1.20m"  (khoảng trống phía trước)
-#    thêm " PHANH" khi phanh an toàn chặn lệnh, "LIDAR?" khi mất dữ liệu LiDAR.
-#  Nút BOOT trên mạch ESP32 (GPIO0) cũng đổi chế độ khi không có điện thoại.
-# =====================================================================
 import gc
 import math
 import time
