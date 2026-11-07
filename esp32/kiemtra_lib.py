@@ -1,10 +1,3 @@
-# =====================================================================
-#  OOMWOO giữa kỳ - tự kiểm tra bằng LiDAR (không cần encoder / MPU)
-#   1) MatNa: lúc mới bật, xe đứng yên vài vòng quét -> ghi lại các tia chạm chính THÂN XE (cột đỡ LiDAR, dây, bánh...)
-#      ở gần (< 30 cm) và không đổi -> bỏ qua chúng, nếu không xe tưởng luôn có vật cản sát mình và xoay tròn mãi.
-#   2) do_xoay(): so 2 vòng quét trước/sau khi ra lệnh xoay TRÁI -> biết xe thực sự xoay trái hay phải
-#      (W_SIGN / LIDAR_CLOCKWISE sai làm xe xoay ngược -> tự chạy sẽ bẻ lái sai và xoay tròn).
-# =====================================================================
 import math
 from array import array
 
