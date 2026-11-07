@@ -6,7 +6,7 @@ for a in "$@"; do case "$a" in --monitor) MONITOR_ONLY=1 ;; *) PORT="$a" ;; esac
 MPR=$(command -v mpremote || true)
 [ -z "$MPR" ] && [ -x "$HOME/.local/bin/mpremote" ] && MPR="$HOME/.local/bin/mpremote"
 if [ -z "$MPR" ]; then
-  echo "Chưa có mpremote, đang cài..."
+  echo "Chưa có mpremote"
   python3 -m pip install --user -q mpremote 2>/dev/null || python3 -m pip install --user -q --break-system-packages mpremote
   [ -x "$HOME/.local/bin/mpremote" ] && MPR="$HOME/.local/bin/mpremote"
 fi
@@ -14,7 +14,7 @@ if [ -z "$MPR" ]; then echo "Không cài được mpremote. Thử:  pipx install
 
 [ -z "$PORT" ] && PORT=$(ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | head -1)
 if [ -z "$PORT" ]; then
-  echo "Không thấy ESP32 (cắm cáp USB data, không phải cáp chỉ sạc)."
+  echo "Không thấy ESP32."
   read -n1 -r -p "Nhấn phím bất kỳ..."; exit 1
 fi
 if [ ! -r "$PORT" ] || [ ! -w "$PORT" ]; then
