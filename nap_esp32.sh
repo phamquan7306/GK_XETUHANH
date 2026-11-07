@@ -1,9 +1,3 @@
-#!/bin/bash
-# XE GIỮA KỲ: nạp esp32/*.py (bản tự chạy tránh vật cản bằng LiDAR + điều khiển qua Wi-Fi) lên ESP32 rồi mở nhật ký.
-#   nap_esp32.sh              nạp + mở nhật ký (Ctrl+D = chạy, thoát: Ctrl+])
-#   nap_esp32.sh --monitor    chỉ xem nhật ký
-#   nap_esp32.sh /dev/ttyUSB0 chọn cổng thủ công
-# Chỉ đụng tới ESP32, không đụng tới thư mục ~/ros2_ws/robot_firmware (bản quét bản đồ đủ cảm biến).
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$DIR/esp32"
 MONITOR_ONLY=0; PORT=""
@@ -36,12 +30,12 @@ if [ $MONITOR_ONLY = 0 ]; then
     if "$MPR" connect "$PORT" fs cp "$f" ":$(basename "$f")" >/dev/null 2>&1; then echo "OK"; else echo "LỖI"; FAIL=1; fi
   done
   if [ -n "$FAIL" ]; then
-    echo "Có file nạp lỗi. Đóng Thonny/VS Code/cửa sổ nhật ký đang giữ cổng $PORT rồi thử lại."
+    echo "Có file nạp lỗi. Cổng $PORT đang bị kết nối"
     read -n1 -r -p "Nhấn phím bất kỳ..."; exit 1
   fi
-  echo "Nạp xong. Đang mở nhật ký ESP32."
-  echo ">>> Nhấn Ctrl+D (hoặc nút RESET) để chạy. Phải thấy:  [WIFI] XE ĐANG PHÁT Wi-Fi 'OOMWOO-XE' ... http://192.168.4.1"
-  echo ">>> Điện thoại vào Wi-Fi đó rồi mở http://192.168.4.1 trên Chrome"
+  echo "Nạp xong."
+  echo ">>> Ctrl+D - softreset."
+  echo ">>> Web-IP http://192.168.4.1"
   echo ">>> Thoát nhật ký: Ctrl+]"
 fi
 "$MPR" connect "$PORT" repl
