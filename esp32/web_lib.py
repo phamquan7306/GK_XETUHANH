@@ -1,10 +1,3 @@
-# =====================================================================
-#  OOMWOO giữa kỳ - điều khiển qua Wi-Fi phát từ điện thoại (4G hotspot), không cần app.
-#  ESP32 vào Wi-Fi của điện thoại -> mở web http://oomwoo.local (hoặc IP của xe) trên Chrome điện thoại
-#  -> trang có 2 joystick + nút. Lệnh đi qua WebSocket (nhanh, ~10-30 ms), cùng bộ lệnh như bản Bluetooth.
-#  Giao diện giống ble_lib: init(), is_connected(), events(), read(), send().
-#  Không vào được Wi-Fi điện thoại sau WIFI_WAIT_S giây -> tự phát Wi-Fi riêng (AP) "OOMWOO-XE", web ở http://192.168.4.1
-# =====================================================================
 import socket
 import time
 
