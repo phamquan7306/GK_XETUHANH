@@ -1,10 +1,3 @@
-# =====================================================================
-#  OOMWOO - Bluetooth Low Energy (BLE) cho ESP32-S3
-#  ESP32-S3 KHÔNG có Bluetooth Classic (kiểu HC-05), chỉ có BLE -> dùng dịch vụ "Nordic UART" (NUS),
-#  chuẩn mà App Inventor (extension BluetoothLE), nRF Connect, Bluefruit Connect ... đều hiểu.
-#    Điện thoại -> xe : ghi chuỗi vào đặc tính RX 6E400002-...   (lệnh, ví dụ "F", "A", "V60")
-#    Xe -> điện thoại : thông báo (notify) trên đặc tính TX 6E400003-...  (trạng thái, <= 20 byte)
-# =====================================================================
 import bluetooth
 from micropython import const
 
