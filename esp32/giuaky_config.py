@@ -1,9 +1,3 @@
-# =====================================================================
-#  OOMWOO - CẤU HÌNH RIÊNG CỦA BẢN GIỮA KỲ (tự chạy tránh vật cản bằng LiDAR + điều khiển từ điện thoại qua Wi-Fi)
-#  Chân GPIO, dấu bánh, LiDAR, PWM ... nằm trong config.py (cùng thư mục).
-#  Sửa file này trong VS Code (biểu tượng "GK Sửa Cấu Hình") rồi bấm "GK Nạp ESP32".
-# =====================================================================
-
 # ---- điều khiển từ điện thoại ----
 CONTROL = 'wifi'             # 'wifi' = trang web trên điện thoại qua Wi-Fi | 'ble' = app Bluetooth
 WIFI_MODE = 'ap'             # 'ap' = ESP32 TỰ PHÁT Wi-Fi (không cần Wi-Fi ngoài), web luôn ở http://192.168.4.1
