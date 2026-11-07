@@ -1,16 +1,3 @@
-# =====================================================================
-#  OOMWOO - TỰ CHẠY LUNG TUNG TRÁNH VẬT CẢN CHỈ BẰNG LIDAR (bản giữa kỳ)
-#  Không dùng encoder, không dùng MPU6050, không cần Ubuntu. Chạy hẳn trên ESP32.
-#
-#  Mỗi vòng quét LiDAR (~6-7 lần/giây):
-#    - với từng hướng thử (-90°..+90° so với mũi xe, cách nhau 15°) tính "hành lang trống": xe rộng 2*HALF_W
-#      đi theo hướng đó được bao xa thì chạm vật cản đầu tiên
-#    - chọn hướng có hành lang dài nhất (ưu tiên hướng gần mũi xe + một "sở thích" ngẫu nhiên đổi vài giây một lần
-#      để xe đi lung tung khắp phòng chứ không chạy mãi một vòng)
-#  Trạng thái:  CHAY  : tiến + bẻ lái dần về hướng tốt nhất, chậm lại khi phía trước gần vật cản, trượt ngang tránh sát tường
-#               QUAY  : phía trước bị chắn -> đứng tại chỗ xoay về phía rộng hơn tới khi phía trước trống
-#               THOAT : có vật quá sát thân xe -> trượt ra xa khỏi vật đó trước khi xoay (bánh mecanum đi ngang được)
-# =====================================================================
 import math
 
 import config
