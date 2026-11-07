@@ -1,13 +1,6 @@
 from micropython import const
 import math
 
-# =====================================================================
-#  OOMWOO - CẤU HÌNH XE THẬT (ESP32-S3, MicroPython)
-#  Sửa file này trong VS Code rồi bấm biểu tượng "Oomwoo Nạp ESP32" trên Desktop.
-#  Các mục đánh dấu [KIỂM TRA] là những thứ phải thử trên xe thật một lần.
-# =====================================================================
-
-# Encoder (Đã đồng bộ viết hoa toàn bộ khớp với encoder_lib.py)
 PIN_ENC_FL = const(7)
 PIN_ENC_FR = const(6)
 PIN_ENC_RL = const(5)
